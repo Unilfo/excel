@@ -1,10 +1,10 @@
 const path = require('path')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const HTMLWevpackPlugin = require('html-webpack-plugin')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const isProd = process.env.NODE_ENV === 'prodaction'
+const isProd = process.env.NODE_ENV === 'production'
 const isDev =!isProd
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
@@ -15,12 +15,15 @@ const jsLoaders = () =>{
             loader: 'babel-loader',
             options: {
                 presets: ['@babel/preset-env'],
+                plugins: ['@babel/plugin-proposal-class-properties'],
             }
         }
     ]
     if (isDev) {
         loaders.push('eslint-loader')
     }
+
+    return loaders
 }
 
 module.exports = {
@@ -45,7 +48,7 @@ module.exports = {
     },
     plugins: [      //  https://webpack.js.org/plugins/copy-webpack-plugin/ все плагины
         new CleanWebpackPlugin(), //    очищаем dist
-        new HTMLWevpackPlugin({  // добавление script js в index
+        new HTMLWebpackPlugin({  // добавление script js в index
             template: 'index.html',
             minify: {
                 removeComments: isProd,
