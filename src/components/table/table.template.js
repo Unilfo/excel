@@ -10,7 +10,7 @@ function toCell(content = '') {
 
 function toColumn(col) {
     return `
-        <div class="excel__table__data__column">
+        <div class="excel__table__data__column" data-type="resizable">
             ${col}
             <div class="col-resize" data-resize="col"></div>
         </div>`
