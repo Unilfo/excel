@@ -3,19 +3,34 @@ const CODES = {
     Z: 90
 }
 
-function toCell(content = '') {
+function toCell(content = '', col) {
     return `
-        <div class="excel__table__data__cell" contenteditable></div>`
+        <div class="excel__table__data__cell" 
+            contenteditable 
+            data-col="${col}">
+        </div>`
 }
 
-function toColumn(col) {
-    return `<div class="excel__table__data__column">${col}</div>`
+function toColumn(col, index) {
+    return `
+        <div class="excel__table__data__column" 
+                data-type="resizable" 
+                data-col="${index}">
+            ${col}
+            <div class="col-resize" data-resize="col"></div>
+        </div>`
 }
 
 function createRow(content, rowCount = '') {
+    const resize = rowCount?
+        `<div class="row-resize" data-resize="row">
+         </div>`: ''
     return `
-        <div class="excel__table__row">
-            <div class="excel__table__row__info">${rowCount}</div>
+        <div class="excel__table__row" data-type="resizable">
+            <div class="excel__table__row__info">
+                ${rowCount}
+                ${resize}
+            </div>
             <div class="excel__table__row__data">${content}</div>
         </div>`
 }
