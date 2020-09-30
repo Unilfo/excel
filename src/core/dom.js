@@ -23,6 +23,17 @@ class Dom {
         this.$el.removeEventListener(eventType, callback)
     }
 
+    id(parse) {
+        if (parse) {
+            const parsed = this.id().split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+
     append(node) {
         if (node instanceof Dom) {
             node = node.$el
