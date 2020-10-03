@@ -28,24 +28,24 @@ export class Formula extends ExcelComponent {
         super.init()
 
         this.$formula = this.$root.find('#formula')
-        this.$on('Table:select', $cell => {
+        this.$on('table:select', $cell => {
             this.$formula.text($cell.text())
         })
 
-        this.$on('Table:input', $cell => {
+        this.$on('table:input', $cell => {
             this.$formula.text($cell.text())
         })
     }
 
     onInput(event) {
-        this.$emit('Formula:input', $(event.target).text())
+        this.$emit('formula:input', $(event.target).text())
     }
 
     onKeydown(event) {
         const keys = ['Enter',  'Tab']
         if (keys.includes(event.key)) {
           event.preventDefault()
-          this.$emit('Formula:done')
+          this.$emit('formula:done')
         }
     }
 }
