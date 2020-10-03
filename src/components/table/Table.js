@@ -82,4 +82,3 @@ export class Table extends ExcelComponent {
         this.$emit('table:input', $(event.target))
     }
 }
-
