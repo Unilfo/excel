@@ -20,7 +20,3 @@ export function matrix($target, $current) {
     }, [])
 }
 
-function f() {
-    console.log('asd')
-}
-f()
