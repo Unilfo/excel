@@ -9,13 +9,23 @@ function toCell(content = '') {
 }
 
 function toColumn(col) {
-    return `<div class="excel__table__data__column">${col}</div>`
+    return `
+        <div class="excel__table__data__column" data-type="resizable">
+            ${col}
+            <div class="col-resize" data-resize="col"></div>
+        </div>`
 }
 
 function createRow(content, rowCount = '') {
+    const resize = rowCount?
+        `<div class="row-resize" data-resize="row">
+         </div>`: ''
     return `
         <div class="excel__table__row">
-            <div class="excel__table__row__info">${rowCount}</div>
+            <div class="excel__table__row__info">
+                ${rowCount}
+                ${resize}
+            </div>
             <div class="excel__table__row__data">${content}</div>
         </div>`
 }
