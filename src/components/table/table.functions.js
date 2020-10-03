@@ -19,3 +19,8 @@ export function matrix($target, $current) {
         return acc
     }, [])
 }
+
+function f() {
+    console.log('asd')
+}
+f()
