@@ -1,10 +1,9 @@
 import {ExcelComponent} from '@core/ExcelComponent';
+import {$} from '@core/dom';
 import {createTable} from '@/components/table/table.template';
 import {resizeHandler} from '@/components/table/table.resize';
-import {isCell, matrix, shouldResize} from '@/components/table/table.functions';
+import {isCell, matrix, nextSelector, shouldResize} from './table.functions';
 import {TableSelection} from '@/components/table/TableSelection';
-import {$} from '@core/dom';
-import {nextSelector} from '@core/util';
 
 export class Table extends ExcelComponent {
     static className = 'excel__table'
@@ -37,13 +36,15 @@ export class Table extends ExcelComponent {
         this.$on('formula:done', () =>{
             this.selection.current.focus()
         })
-        this.$subscribe(state => console.log('Table state', state))
+
+        this.$subscribe(state => {
+            console.log('Table state', state)
+        })
     }
 
     selectCell($cell) {
         this.selection.select($cell)
         this.$emit('table:select', $cell)
-        this.$dispatch({type: 'TEST'})
     }
 
     async resizeTable(event) {
@@ -57,7 +58,7 @@ export class Table extends ExcelComponent {
 
     onMousedown(event) {
         if (shouldResize(event)) {
-           this.resizeHandler(event)
+           this.resizeTable(event)
         } else if (isCell(event)) {
             const $target = $(event.target);
             if (event.shiftKey) {
@@ -72,13 +73,14 @@ export class Table extends ExcelComponent {
 
     onKeydown(event) {
         const keys = [
-            'ArrowLeft',
-            'Tab',
             'Enter',
+            'Tab',
+            'ArrowLeft',
             'ArrowRight',
-            'ArrowUp',
-            'ArrowDown'
+            'ArrowDown',
+            'ArrowUp'
         ]
+
         const {key} = event
 
         if (keys.includes(key) && !event.shiftKey) {
