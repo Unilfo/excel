@@ -15,7 +15,7 @@ export function range(start, end) {
         .map((_, index) => start + index)
 }
 
-export  function storage(key, data = null) {
+export function storage(key, data = null) {
     if (!data) {
         return JSON.parse(localStorage.getItem(key))
     }
