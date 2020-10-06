@@ -2,21 +2,32 @@ const CODES = {
     A: 65,
     Z: 90
 }
-const DEFAULT_WIDTH ='120'
-const DEFAULT_HEIGHT ='24'
+
+const DEFAULT_WIDTH = 120
+const DEFAULT_HEIGHT = 24
+
+function getWidth(state, index) {
+    return (state[index] || DEFAULT_WIDTH) + 'px'
+}
+
+function getHeight(state, index) {
+    return (state[index] || DEFAULT_HEIGHT) + 'px'
+}
 
 function toCell(state, row) {
     return function(_, col) {
-        const width = getWidth(state, col)
+        const id = `${row}:${col}`
+        const width = getWidth(state.colState, col)
+        const data = state.dataState[id]
         return `
             <div 
                 class="excel__table__data__cell"
                 contenteditable
                 data-col="${col}"
                 data-type="cell"
-                data-id="${row}:${col}" 
+                data-id=${id} 
                 style="width: ${width}"
-            ></div>`
+            >${data || ''}</div>`
     }
 }
 
@@ -35,19 +46,11 @@ function toColumn({col, index, width}) {
         </div>`
 }
 
-function getWidth(state, index) {
-        return (state[index] || DEFAULT_WIDTH) + 'px'
-}
-
-function getHeight(state, index) {
-    return (state[index] || DEFAULT_HEIGHT) + 'px'
-}
-
-function createRow(index, content, state) {
-    const height = getHeight(state, index)
+function createRow(index, content, state = {}) {
     const resize = index ?
         `<div class="row-resize" data-resize="row">
          </div>`: ''
+    const height = getHeight(state, index)
     return `
         <div class="excel__table__row" 
                 data-type="resizable" 
@@ -88,12 +91,12 @@ export function createTable(rowsCount = 15, state = {}) {
         .map(toColumn)
         .join('')
 
-    rows.push(createRow(null, cols, {}))
+    rows.push(createRow(null, cols))
 
     for (let row = 0; row < rowsCount; row++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(toCell(state.colState, row))
+            .map(toCell(state, row))
             .join('')
 
         rows.push(createRow(row+1, cells, state.rowState))
