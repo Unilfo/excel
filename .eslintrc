@@ -13,7 +13,11 @@
     "require-jsdoc": "off",
     "indent": "off",
     "no-multi-spaces": "off",
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "max-len": [1, 120, 2, {
+      "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
+      "ignoreUrls": true
+    }]
   },
   "extends": ["eslint:recommended", "google"]
 }
