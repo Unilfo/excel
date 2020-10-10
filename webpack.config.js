@@ -1,11 +1,12 @@
 const path = require('path')
+const webpack = require('webpack')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
-const isDev =!isProd
+const isDev = !isProd
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
 
@@ -52,7 +53,7 @@ module.exports = {
             template: 'index.html',
             minify: {
                 removeComments: isProd,
-                collapseWhiteSpace: isProd
+                collapseWhitespace: isProd
             }
         }),
         new CopyPlugin({  //    копируем из ... в ...
@@ -65,7 +66,10 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({   // храним все css в одном месте
             filename: filename('css')
-        })
+        }),
+      new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      })
     ],
     module: {
         rules: [   //   правила обрабатыввается снизу вверх
@@ -84,7 +88,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.m?js$/,
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: jsLoaders(),
             }
